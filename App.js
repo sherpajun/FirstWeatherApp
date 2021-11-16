@@ -1,9 +1,25 @@
 
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import {View,StyleSheet,Text } from 'react-native';
+import {View,StyleSheet,Text,Dimensions,ScrollView } from 'react-native';
+import * as Location from 'expo-location';
+import {useState,useEffect} from 'react';
 
 export default function App() {
+  const[location,setLocation] = useState();
+  const[ok,setOk] = useState(true);
+  const ask =async()=>{
+    const {permission} = await Location.requestForegroundPermissionsAsync();
+    if(!permission){
+      setOk(false);
+    }
+    const location = await Location.getCurrentPositionAsync({accuracy:5});
+    console.log(location);
+  };
+  useEffect(() => {
+  
+    ask();
+  }, [])
   return (
     <View style={styles.container}>
       <View style={styles.city}>
